@@ -1,5 +1,7 @@
 import 'package:dog_app_bloc/bloc/nav_bar/nav_bar.dart';
 import 'package:dog_app_bloc/bloc/nav_bar/nav_bar_state.dart';
+import 'package:dog_app_bloc/presentation/home/dog/dog_view.dart';
+import 'package:dog_app_bloc/presentation/home/login/login_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -20,14 +22,19 @@ class _HomeState extends State<Home> {
   }
 
   @override
+  void dispose() {
+    _navbarBloc!.close();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return BlocBuilder(
       bloc: _navbarBloc,
       builder: (BuildContext context, NavbarState state) {
-        if (state is ShowDog){
+        if (state is ShowDog) {
           return buildHomepage(state.title, Colors.blue, state.itemIndex);
-        }
-        else if(state is ShowLogin){
+        } else if (state is ShowLogin) {
           return buildHomepage(state.title, Colors.red, state.itemIndex);
         } else {
           return const SizedBox();
@@ -41,12 +48,7 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text(title),
       ),
-      body: Container(
-        color: color,
-        child: Center(
-          child: Text(title),
-        ),
-      ),
+      body: currentIndex == 0 ? const LoginView() : const DogView(),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) {
