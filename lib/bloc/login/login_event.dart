@@ -9,3 +9,11 @@ class LoginEventSubmit extends LoginEvent {
     this.password,
   );
 }
+
+class LoginEventSuccess extends LoginEvent {
+  final bool isSuccess;
+  
+  LoginEventSuccess(
+    this.isSuccess,
+  );
+}

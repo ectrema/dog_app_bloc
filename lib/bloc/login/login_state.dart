@@ -1,14 +1,14 @@
-enum FieldError { empty, invalid }
+enum FieldError { empty, invalid , valid }
 
 class LoginState {
   final bool isBusy;
-  final FieldError emailError;
-  final FieldError passwordError;
+  final FieldError? emailError;
+  final FieldError? passwordError;
   final bool submissionSuccess;
   LoginState({
     this.isBusy = false,
-    this.emailError = FieldError.empty,
-    this.passwordError = FieldError.empty,
+    this.emailError,
+    this.passwordError,
     this.submissionSuccess = false,
   });
 

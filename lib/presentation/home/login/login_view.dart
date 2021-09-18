@@ -54,7 +54,7 @@ class _LoginViewState extends State<LoginView> {
                   color: Colors.blue,
                   margin: const EdgeInsets.all(15),
                   height: 30,
-                  child: Text('Submit'),
+                  child: const Text('Submit'),
                   alignment: Alignment.center,
                 ),
                 onTap: () async {
@@ -73,7 +73,7 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 
-  Card _buildLoginBloc(LoginState state) {
+  Widget _buildLoginBloc(LoginState state) {
     return Card(
       color: Colors.grey[200],
       margin: const EdgeInsets.all(5),
@@ -84,19 +84,18 @@ class _LoginViewState extends State<LoginView> {
           children: <Widget>[
             TextField(
               controller: _emailController,
-              style: const TextStyle(
-                color: Colors.black,
+              style: TextStyle(
+                color: state.emailError != FieldError.valid
+                    ? Colors.red
+                    : Colors.black,
               ),
               enabled: !state.isBusy,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 hintText: 'Email',
                 labelStyle: TextStyle(
-                  color: state.emailError == FieldError.empty ||
-                          state.emailError == FieldError.invalid
-                      ? Colors.red
-                      : Colors.black,
+                  color: Colors.black,
                 ),
-                hintStyle: const TextStyle(
+                hintStyle: TextStyle(
                   color: Colors.black,
                 ),
               ),
@@ -104,8 +103,10 @@ class _LoginViewState extends State<LoginView> {
             const SizedBox(height: 30),
             TextField(
               controller: _passwordController,
-              style: const TextStyle(
-                color: Colors.black,
+              style: TextStyle(
+                color: state.passwordError != FieldError.valid
+                    ? Colors.red
+                    : Colors.black,
               ),
               enabled: !state.isBusy,
               obscureText: true,
@@ -119,6 +120,12 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
             ),
+            state.submissionSuccess
+                ? const Padding(
+                    padding: EdgeInsets.only(top: 15),
+                    child: Text('200'),
+                  )
+                : const SizedBox(),
           ],
         ),
       ),
