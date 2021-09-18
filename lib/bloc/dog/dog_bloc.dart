@@ -1,3 +1,4 @@
+import 'package:dog_app_bloc/entities/api_response.dart';
 import 'package:dog_app_bloc/entities/dog.dart';
 import 'package:dog_app_bloc/repositories/dog_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,9 +16,9 @@ class DogBloc extends Bloc<DogEvent, DogState> {
   @override
   Stream<DogState> mapEventToState(DogEvent event) async* {
     if (event is DogEventGet) {
+      ApiResponse _temp = await repository.getDog();
       List<Dog> dogList = <Dog>[];
-      Map<String, dynamic> _temp = await repository.getDog();
-      (_temp['message'] as Map<String, dynamic>).forEach((key, value) {
+      _temp.message?.forEach((key, value) {
         if ((value as List).isEmpty) {
           dogList.add(Dog(name: key));
         } else {

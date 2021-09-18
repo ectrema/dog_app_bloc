@@ -1,8 +1,3 @@
-import 'package:json_annotation/json_annotation.dart';
-
-part 'dog.g.dart';
-
-@JsonSerializable()
 class Dog {
   String? imageLisk;
   String? name;
@@ -23,7 +18,4 @@ class Dog {
     name: name ?? this.name,
     details: details ?? this.details,
   );
-
-  factory Dog.fromJson(Map<String, dynamic> json) => _$DogFromJson(json);
-  Map<String, dynamic> toJson() => _$DogToJson(this);
 }
