@@ -1,5 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:dog_app_bloc/bloc/login/login.dart';
+import 'package:dog_app_bloc/bloc/login/login_bloc.dart';
 import 'package:dog_app_bloc/bloc/login/login_event.dart';
 import 'package:dog_app_bloc/bloc/login/login_state.dart';
 import 'package:dog_app_bloc/repositories/login_repository.dart';
