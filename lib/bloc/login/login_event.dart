@@ -17,3 +17,19 @@ class LoginEventSuccess extends LoginEvent {
     this.isSuccess,
   );
 }
+
+class LoginEventEmailChanged extends LoginEvent {
+  final String email;
+  
+  LoginEventEmailChanged(
+    this.email,
+  );
+}
+
+class LoginEventPasswordChanged extends LoginEvent {
+  final String password;
+  
+  LoginEventPasswordChanged(
+    this.password,
+  );
+}

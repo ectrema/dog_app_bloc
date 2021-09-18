@@ -16,9 +16,9 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   LoginBloc? loginBloc;
   final TextEditingController _emailController =
-      TextEditingController(text: 'eve.holt@reqres.in');
+      TextEditingController();
   final TextEditingController _passwordController =
-      TextEditingController(text: 'cityslicka');
+      TextEditingController();
 
   @override
   void initState() {
@@ -89,6 +89,9 @@ class _LoginViewState extends State<LoginView> {
                     ? Colors.red
                     : Colors.black,
               ),
+              onChanged: (value) {
+                loginBloc!.add(LoginEventEmailChanged(_emailController.text));
+              },
               enabled: !state.isBusy,
               decoration: const InputDecoration(
                 hintText: 'Email',
@@ -108,6 +111,9 @@ class _LoginViewState extends State<LoginView> {
                     ? Colors.red
                     : Colors.black,
               ),
+              onChanged: (value) {
+                loginBloc!.add(LoginEventPasswordChanged(_passwordController.text));
+              },
               enabled: !state.isBusy,
               obscureText: true,
               decoration: const InputDecoration(

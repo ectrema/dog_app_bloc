@@ -16,6 +16,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     if (event is LoginEventSubmit) {
       yield state.copywith(isBusy: true);
 
+      if (state.passwordError == FieldError.valid &&
+          state.emailError == FieldError.valid) {
+        try {
+          await repository
+              .login(
+            email: event.email,
+            password: event.password,
+          )
+              .then((value) {
+            add(LoginEventSuccess(value));
+          });
+        } catch (e) {
+          yield state.copywith(isBusy: false);
+          add(LoginEventSuccess(false));
+          rethrow;
+        }
+      }
+      yield state.copywith(isBusy: false);
+    } else if (event is LoginEventSuccess) {
+      yield state.copywith(submissionSuccess: event.isSuccess);
+    } else if (event is LoginEventEmailChanged) {
       if (isFieldEmpty(event.email)) {
         yield state.copywith(emailError: FieldError.empty);
       } else if (!validateEmailAddress(event.email)) {
@@ -23,28 +44,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       } else {
         yield state.copywith(emailError: FieldError.valid);
       }
-
+    } else if (event is LoginEventPasswordChanged) {
       if (!validatePassword(event.password)) {
         yield state.copywith(passwordError: FieldError.invalid);
       } else {
         yield state.copywith(passwordError: FieldError.valid);
       }
-
-      if (state.passwordError == FieldError.valid && state.emailError == FieldError.valid) {
-        await repository
-            .login(
-          email: event.email,
-          password: event.password,
-        )
-            .then((value) {
-          add(LoginEventSuccess(value));
-        });
-      } else {
-        add(LoginEventSuccess(false));
-      }
-      yield state.copywith(isBusy: false);
-    } else if (event is LoginEventSuccess) {
-      yield state.copywith(submissionSuccess: event.isSuccess);
     }
   }
 
