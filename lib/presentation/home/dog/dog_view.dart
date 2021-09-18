@@ -36,7 +36,7 @@ class _DogViewState extends State<DogView> {
       builder: (context, state) => state.dogList?.isNotEmpty ?? false
           ? _buildDogList(state)
           : const Center(
-              child: Text('No dog founds'),
+              child: CircularProgressIndicator(),
             ),
     );
   }
@@ -64,6 +64,11 @@ class _DogViewState extends State<DogView> {
           Text(
             dog.name!.toUpperCase(),
           ),
+          Image.network(
+            dog.imageLisk ?? '',
+            fit: BoxFit.fill,
+            height: 150,
+          )
         ],
       ),
     );

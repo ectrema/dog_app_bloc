@@ -17,20 +17,25 @@ class DogBloc extends Bloc<DogEvent, DogState> {
     if (event is DogEventGet) {
       List<Dog> dogList = <Dog>[];
       Map<String, dynamic> _temp = await repository.getDog();
-      (_temp['message'] as Map<String, dynamic>).forEach(
-        (key, value) {
-          if ((value as List).isEmpty) {
-            dogList.add(Dog(name: key));
-          } else {
-            for (var element in value) {
-            dogList.add(Dog(name: element));
-            }
+      (_temp['message'] as Map<String, dynamic>).forEach((key, value) {
+        if ((value as List).isEmpty) {
+          dogList.add(Dog(name: key));
+        } else {
+          for (var element in value) {
+            dogList.add(Dog(name: '$key $element'));
           }
-        });
-        // for (var i = 0; i < dogList.length; i++) {
-        //   dogList[i] = dogList[i].copywith(imageLisk: );
-        // }
-      
+        }
+      });
+      for (var i = 0; i < dogList.length; i++) {
+        dogList[i] = dogList[i].copywith(
+          imageLisk: await repository
+              .getImageDog(dogList[i].name?.replaceAll(' ', '/') ?? '')
+              .then(
+                (value) => value['message'],
+              ),
+        );
+      }
+
       yield state.copywith(dogList: dogList);
     }
   }
