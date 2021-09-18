@@ -3,6 +3,7 @@ import 'package:dog_app_bloc/bloc/dog/dog_bloc.dart';
 import 'package:dog_app_bloc/bloc/dog/dog_event.dart';
 import 'package:dog_app_bloc/bloc/dog/dog_state.dart';
 import 'package:dog_app_bloc/entities/dog.dart';
+import 'package:dog_app_bloc/presentation/home/dog/widget/detail_dog.dart';
 import 'package:dog_app_bloc/repositories/dog_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -53,23 +54,32 @@ class _DogViewState extends State<DogView> {
   }
 
   Widget _buildDogItem(Dog dog) {
-    return Container(
-      width: MediaQuery.of(context).size.width * 0.45,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(5),
-      ),
-      margin: const EdgeInsets.all(10),
-      child: Column(
-        children: [
-          Text(
-            dog.name!.toUpperCase(),
+    return InkWell(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => DetailDog(dog: dog),
           ),
-          Image.network(
-            dog.imageLisk ?? '',
-            fit: BoxFit.fill,
-            height: 150,
-          )
-        ],
+        );
+      },
+      child: Container(
+        width: MediaQuery.of(context).size.width * 0.45,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(5),
+        ),
+        margin: const EdgeInsets.all(10),
+        child: Column(
+          children: [
+            Text(
+              dog.name!.toUpperCase(),
+            ),
+            Image.network(
+              dog.imageLisk ?? '',
+              fit: BoxFit.fill,
+              height: 150,
+            )
+          ],
+        ),
       ),
     );
   }
