@@ -15,17 +15,15 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   LoginBloc? loginBloc;
-  final TextEditingController _emailController =
-      TextEditingController();
-  final TextEditingController _passwordController =
-      TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   void initState() {
     loginBloc = LoginBloc(
       LoginState(),
       repository: LoginRepository(
-        client: Dio(
+        Dio(
           BaseOptions(
             baseUrl: 'https://reqres.in/api',
           ),
@@ -112,7 +110,8 @@ class _LoginViewState extends State<LoginView> {
                     : Colors.black,
               ),
               onChanged: (value) {
-                loginBloc!.add(LoginEventPasswordChanged(_passwordController.text));
+                loginBloc!
+                    .add(LoginEventPasswordChanged(_passwordController.text));
               },
               enabled: !state.isBusy,
               obscureText: true,
@@ -126,7 +125,7 @@ class _LoginViewState extends State<LoginView> {
                 ),
               ),
             ),
-            state.submissionSuccess
+            state.token != null && state.token != ''
                 ? const Padding(
                     padding: EdgeInsets.only(top: 15),
                     child: Text('200'),

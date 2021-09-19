@@ -1,20 +1,13 @@
-import 'dart:convert';
-
+import 'package:retrofit/http.dart';
 import 'package:dio/dio.dart';
 
-class LoginRepository {
-  final Dio client;
+part 'login_repository.g.dart';
 
-  LoginRepository({required this.client});
+@RestApi(baseUrl: "https://reqres.in/api")
+abstract class LoginRepository {
+  factory LoginRepository(Dio dio, {String baseUrl}) = _LoginRepository;
 
-  Future<bool> login({String? email, String? password}) async {
-    Response response = await client.post(
-      '/login',
-      data: jsonEncode({
-        'email': email,
-        'password': password
-      }),
-    );
-    return response.statusCode == 200;
-  }
+  @POST("/login")
+  Future<dynamic> postLogin(
+      @Field('email') String email, @Field('password') String password);
 }

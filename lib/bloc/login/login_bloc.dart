@@ -20,22 +20,22 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           state.emailError == FieldError.valid) {
         try {
           await repository
-              .login(
-            email: event.email,
-            password: event.password,
+              .postLogin(
+            event.email,
+            event.password,
           )
               .then((value) {
-            add(LoginEventSuccess(value));
+            add(LoginEventSuccess(value['token']));
           });
         } catch (e) {
           yield state.copywith(isBusy: false);
-          add(LoginEventSuccess(false));
+            add(LoginEventSuccess(''));
           rethrow;
         }
       }
       yield state.copywith(isBusy: false);
     } else if (event is LoginEventSuccess) {
-      yield state.copywith(submissionSuccess: event.isSuccess);
+      yield state.copywith(token: event.token);
     } else if (event is LoginEventEmailChanged) {
       if (isFieldEmpty(event.email)) {
         yield state.copywith(emailError: FieldError.empty);

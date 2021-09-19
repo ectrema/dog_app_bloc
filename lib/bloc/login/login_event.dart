@@ -11,10 +11,10 @@ class LoginEventSubmit extends LoginEvent {
 }
 
 class LoginEventSuccess extends LoginEvent {
-  final bool isSuccess;
+  final String token;
   
   LoginEventSuccess(
-    this.isSuccess,
+    this.token,
   );
 }
 
