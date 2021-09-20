@@ -11,7 +11,24 @@ class LoginState {
     this.passwordError,
     this.token,
   });
+  @override
+  String toString() {
+    return '$emailError';
+  }
 
+  @override
+  bool operator ==(other) {
+    if(other is LoginState){
+      return other.isBusy == isBusy && emailError == other.emailError && other.passwordError == passwordError && token == other.token;
+    } else {
+      return other == this;
+    }
+  }
+
+  @override
+  // TODO: implement hashCode
+  int get hashCode => identityHashCode('${isBusy.hashCode} ${emailError.toString()} ${passwordError.toString()} $token');
+  
   LoginState copywith({
     bool? isBusy,
     FieldError? emailError,

@@ -1,7 +1,5 @@
 import 'package:dog_app_bloc/entities/dog.dart';
 
-enum FieldError { empty, invalid, valid }
-
 class DogState {
   final bool isBusy;
   final bool submissionSuccess;
