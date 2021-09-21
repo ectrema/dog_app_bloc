@@ -27,6 +27,16 @@ void main() {
       expect(state.isBusy, true);
       expect(state.passwordError, FieldError.valid);
     });
+    test('test null value', () {
+      LoginState state = LoginState();
+      state = state.copywith(
+        isBusy: true,
+      );
+      expect(state.emailError, null);
+      expect(state.token, null);
+      expect(state.isBusy, true);
+      expect(state.passwordError, null);
+    });
   });
   group(
     'test email regex',
