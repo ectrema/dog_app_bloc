@@ -16,16 +16,17 @@ class _LoginRepository implements LoginRepository {
   String? baseUrl;
 
   @override
-  Future<dynamic> postLogin(email, password) async {
+  Future<LoginResponse> postLogin(email, password) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _data = {'email': email, 'password': password};
-    final _result = await _dio.fetch(_setStreamType<dynamic>(
-        Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
-            .compose(_dio.options, '/login',
-                queryParameters: queryParameters, data: _data)
-            .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
-    final value = _result.data;
+    final _result = await _dio.fetch<Map<String, dynamic>>(
+        _setStreamType<LoginResponse>(
+            Options(method: 'POST', headers: <String, dynamic>{}, extra: _extra)
+                .compose(_dio.options, '/login',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    final value = LoginResponse.fromJson(_result.data!);
     return value;
   }
 

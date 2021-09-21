@@ -25,11 +25,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             event.password,
           )
               .then((value) {
-            add(LoginEventSuccess(value['token']));
+            add(LoginEventSuccess(value.token ?? ''));
           });
         } catch (e) {
           yield state.copywith(isBusy: false);
-            add(LoginEventSuccess(''));
+          add(LoginEventSuccess(''));
           rethrow;
         }
       }
