@@ -43,11 +43,13 @@ class _DogViewState extends State<DogView> {
   }
 
   Widget _buildDogList(DogState state) {
-    return SingleChildScrollView(
-      child: Wrap(
-        children: List.generate(
-          state.dogList!.length,
-          (index) => _buildDogItem(state.dogList![index]),
+    return SafeArea(
+      child: SingleChildScrollView(
+        child: Wrap(
+          children: List.generate(
+            state.dogList!.length,
+            (index) => _buildDogItem(state.dogList![index]),
+          ),
         ),
       ),
     );
@@ -63,7 +65,7 @@ class _DogViewState extends State<DogView> {
         );
       },
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.45,
+        width: MediaQuery.of(context).size.width * 0.4,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(5),
         ),

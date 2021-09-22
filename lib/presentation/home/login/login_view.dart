@@ -14,6 +14,7 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
+  final GlobalKey<FormState> globalKey = GlobalKey<FormState>();
   LoginBloc? loginBloc;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
@@ -35,38 +36,43 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: MediaQuery.of(context).size.width,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          const Text('Login'),
-          Column(
-            children: [
-              BlocBuilder<LoginBloc, LoginState>(
-                bloc: loginBloc,
-                builder: (context, state) => _buildLoginBloc(state),
-              ),
-              InkWell(
-                child: Container(
-                  color: Colors.blue,
-                  margin: const EdgeInsets.all(15),
-                  height: 30,
-                  child: const Text('Submit'),
-                  alignment: Alignment.center,
+    return Form(
+      key: globalKey,
+      child: SizedBox(
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text('Login'),
+            Column(
+              children: [
+                BlocBuilder<LoginBloc, LoginState>(
+                  bloc: loginBloc,
+                  builder: (context, state) => _buildLoginBloc(state),
                 ),
-                onTap: () async {
-                  loginBloc!.add(
-                    LoginEventSubmit(
-                      _emailController.text,
-                      _passwordController.text,
-                    ),
-                  );
-                },
-              ),
-            ],
-          ),
-        ],
+                InkWell(
+                  child: Container(
+                    color: Colors.blue,
+                    margin: const EdgeInsets.all(15),
+                    height: 30,
+                    child: const Text('Submit'),
+                    alignment: Alignment.center,
+                  ),
+                  onTap: () async {
+                    if (globalKey.currentState!.validate()) {
+                      loginBloc!.add(
+                        LoginEventSubmit(
+                          _emailController.text,
+                          _passwordController.text,
+                        ),
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -80,7 +86,13 @@ class _LoginViewState extends State<LoginView> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            TextField(
+            TextFormField(
+              validator: (_) {
+                if (state.emailError != FieldError.valid) {
+                  return "Please Enter Correct Email";
+                }
+                return null;
+              },
               controller: _emailController,
               style: TextStyle(
                 color: state.emailError != FieldError.valid
@@ -102,7 +114,13 @@ class _LoginViewState extends State<LoginView> {
               ),
             ),
             const SizedBox(height: 30),
-            TextField(
+            TextFormField(
+              validator: (_) {
+                if (state.passwordError != FieldError.valid) {
+                  return "Please Enter Correct Password";
+                }
+                return null;
+              },
               controller: _passwordController,
               style: TextStyle(
                 color: state.passwordError != FieldError.valid
